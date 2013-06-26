@@ -18,7 +18,6 @@
 
   <script src="http://code.jquery.com/jquery.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/modernizr.js"></script>
 
   <script type="text/javascript" src="js/waypoints.min.js"></script>
   <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
@@ -103,26 +102,28 @@
           </div>
 
           <div class="row">
-              <div class="span8">
-                <p>Стоимость бурения скважины зависит от качества грунта.</p>
-              </div>
+            <div class="span8">
+              <p>Цены бурения на воду начинается от <strong>1500 рублей</strong>.</p>
+              <p>Цена буровых работ зависит от многих факторов, таких как удаленность от города, геологического разреза, сложности выполнения и продолжительности работ.</p>
+              <p>В нашу цену уже включены металлические обсадные трубы. Точную стоимость бурения скважины Вы можете узнать у наших специалистов, сообщив по телефону или по электронной почте место, где будет проводиться бурение. Просто позвоните, чтобы купить скважину для дома в нашей компании.</p>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="section" id="section4" data-section="4">
         <script type="text/javascript">
-          ymaps.ready(init);
-          var myMap, 
-          myPlacemark;
+        ymaps.ready(init);
+        var myMap, 
+        myPlacemark;
 
-          function init(){     
-            myMap = new ymaps.Map ("map", {
-              center: [55.189855, 61.355275],
-              zoom: 10
-            });
+        function init(){     
+          myMap = new ymaps.Map ("map", {
+            center: [55.189855, 61.355275],
+            zoom: 10
+          });
 
-            myPlacemark = new ymaps.Placemark([55.189855, 61.355275], {
+          myPlacemark = new ymaps.Placemark([55.189855, 61.355275], {
                       // Свойства
                       iconContent: '1',
                       balloonContentHeader: 'Название объекта',
@@ -132,7 +133,7 @@
                       preset: 'twirl#blueStretchyIcon' // иконка растягивается под контент
                     });
 
-            myPlacemark_2 = new ymaps.Placemark([55.174625, 61.400434], {
+          myPlacemark_2 = new ymaps.Placemark([55.174625, 61.400434], {
                       // Свойства
                       iconContent: '2',
                       balloonContentHeader: 'Название объекта',
@@ -142,9 +143,9 @@
                       preset: 'twirl#blueStretchyIcon' // иконка растягивается под контент
                     });
 
-            myMap.geoObjects.add(myPlacemark);
-            myMap.geoObjects.add(myPlacemark_2);
-          }
+          myMap.geoObjects.add(myPlacemark);
+          myMap.geoObjects.add(myPlacemark_2);
+        }
         </script>
         <div id="map" style="width: 100%; height: 650px"></div>
         
@@ -166,20 +167,15 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="span8">
-             
-            </div>
-          </div>
           <hr/>
-          <form method="POST" class="form-horizontal" action="#">
+          <form method="POST" id="order" class="form-horizontal" action="order">
 
             <div class="row-fluid">
               <div class="span6">
                 <div class="control-group">
                   <label for="name" class="control-label">Ваше имя:</label>
                   <div class="controls">
-                    <input class="span12" type="text" name="name" id="name">
+                    <input class="span12" type="text" name="name" id="name" data-regexp="^[А-Яа-яЁёA-Za-z\s]{2,}$">
                   </div>
                 </div>
               </div>
@@ -190,7 +186,7 @@
                 <div class="control-group">
                   <label for="phone" class="control-label">Телефон:</label>
                   <div class="controls">
-                    <input class="span12" type="text" name="phone" id="phone">
+                    <input class="span12" type="text" name="phone" id="phone" data-regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$">
                   </div>
                 </div>
               </div>
@@ -201,7 +197,7 @@
                 <div class="control-group">
                   <label for="email" class="control-label">e-mail:</label>
                   <div class="controls">
-                    <input class="span12" type="text" name="email" id="email">
+                    <input class="span12" type="text" name="email" id="email" data-regexp="^([-a-z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z]))?$">
                   </div>
                 </div>
               </div>
@@ -230,8 +226,14 @@
                 </div>
               </div>
             </div>
-
           </form>
+          
+          <div class="row">
+            <div class="span8" id="orderResult" style="display:none">
+
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -267,13 +269,13 @@
                 &mdash; Оставьте свой номер телефона, мы сами Вам перезвоним.
               </p>
 
-              <form method="POST" class="form-horizontal" action="#">
+              <form method="POST" class="form-horizontal" id="orderCall" action="orderCall">
                 <div class="row-fluid">
                   <div class="span12">
                     <div class="control-group">
-                      <label for="name" class="control-label">Ваш номер телефона:</label>
+                      <label for="phone" class="control-label">Ваш номер телефона:</label>
                       <div class="controls">
-                        <input class="span6" type="text" name="name" id="name">
+                        <input class="span6" type="text" name="phone" id="phone" data-regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$">
                         <button type="submit" class="btn-inverse">
                           Отправить
                           <i class="icon-circle-arrow-right"></i>
@@ -283,6 +285,7 @@
                   </div>
                 </div>
               </form>
+              <div id="orderCallResult" style="display:none"></div>
 
             </div>
           </div>          

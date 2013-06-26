@@ -1,23 +1,18 @@
 $(document).ready(function ($) {
 
-    $("#section3 a.thumbnail").click(function(){
-        $("section.details").slideDown(1000);
-        return false;
-    });
+    //Скорость анимации
+    var speed = 300;
 
-    // Sidebar Toggle
+    // Переключаем боковую панель
     $('.btn-navbar').click( function() {
 	    $('html').toggleClass('expanded');
     });
 		
-	// Waypoints Scrolling
-	
+	// Скроллинг
 	var links = $('.navigation').find('li');
-	var button = $('.intro button');
     var section = $('section');
     var mywindow = $(window);
     var htmlbody = $('html,body');
-
     
     section.waypoint(function (direction) {
 
@@ -60,62 +55,68 @@ $(document).ready(function ($) {
         var datasection = $(this).attr('data-section');
         goToByScroll(datasection);
     });
-    
-    button.click(function (e) {
-        e.preventDefault();
-        var datasection = $(this).attr('data-section');
-        goToByScroll(datasection);
-    });
-  
-    // Snap to scroll (optional)
-    
-    /*
 
-    section.waypoint(function (direction) {
-
-        var nextpos = $(this).attr('data-section');
-        var prevpos = $(this).prev().attr('data-section');
-
-        if (nextpos != 1) {
-	        if (direction === 'down') {
-	            htmlbody.animate({
-		            scrollTop: $('.section[data-section="' + nextpos + '"]').offset().top
-		        }, 750, 'easeOutQuad');
-	        }
-	        else {
-	            htmlbody.animate({
-		            scrollTop: $('.section[data-section="' + prevpos + '"]').offset().top
-		        }, 750, 'easeOutQuad');
-	        }
-        }
+    //Валидация формы заказа и отправка данных
+    $("form#order").submit(function(){
+        var errors = 0;
+        $("form#order label").removeClass("red");
         
+        $(this).find("input").each(function(key, val){
+            
+            var reg = new RegExp($(this).data('regexp'));
+            var current = $(this).val();
 
-    }, { offset: '60%' });	
-    
-    */
-   
-       
-    
-    
-    // Redirect external links
-	
-	$("a[rel='external']").click(function(){
-		this.target = "_blank";
-	}); 	
-	
-	
-	// Modernizr SVG backup
-	
-	if(!Modernizr.svg) {
-	    $('img[src*="svg"]').attr('src', function() {
-	        return $(this).attr('src').replace('.svg', '.png');
-	    });
-	}    
-	    
-    
+            if(!reg.test(current)){
+                $("form#order label:eq("+key+")").addClass("red");
+                errors++;
+            }
 
-    
-    
+        });
+        
+        if(errors > 0) {
+            return false;
+        } else {
+            console.log("AJAX");
+            $(this).slideUp(speed, function(){
+                $("<p/>",{
+                    text: "Ваш запрос успешно отправлен. Ожидайте звонка от менеджера для подтверждения заявки."
+                }).appendTo($("#orderResult"));
+                $("#orderResult").slideDown(speed);
+            });
+            return false;
+        }
+    });
+
+    //Заказать звонок
+    $("form#orderCall").submit(function(){
+        var errors = 0;
+        $("form#order label").removeClass("red");
+        
+        $(this).find("input").each(function(key, val){
+            
+            var reg = new RegExp($(this).data('regexp'));
+            var current = $(this).val();
+
+            if(!reg.test(current)){
+                $("form#orderCall label:eq("+key+")").addClass("red");
+                errors++;
+            }
+
+        });
+        
+        if(errors > 0) {
+            return false;
+        } else {
+            console.log("AJAX");
+            $(this).slideUp(speed, function(){
+                $("<p/>",{
+                    text: "Спасибо. Мы с Вами свяжемся в ближайшее время."
+                }).appendTo($("#orderCallResult"));
+                $("#orderCallResult").slideDown(speed);
+            });
+            return false;
+        }
+    });
 
 
 });
